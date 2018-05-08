@@ -36,10 +36,10 @@ function doTick() {
   console.log("Wait list", listWait);
   if (memory.pageList[i] != null) {
     for (var j = 0; j < memory.pageList.length; j++) {
-      if (memory.pageList[i] != null) {
-        memory.pageList[i].tMemory--;
-        if (memory.pageList[i].tMemory <= 0) {
-          memory.pageList[i] = null;
+      if (memory.pageList[j] != null) {
+        memory.pageList[j].tMemory--;
+        if (memory.pageList[j].tMemory <= 0) {
+          memory.pageList[j] = null;
           memory.freePages++;
         }
       }
