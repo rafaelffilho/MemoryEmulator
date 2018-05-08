@@ -1,52 +1,55 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Processos S.O</title>
-        <meta charset="utf-8" />
-        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css">
-        <!--
+
+<head>
+    <title>Processos S.O</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css">
+    <!--
         <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
         -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    </head>
-    <body style="margin: 30px">
-        <h1 class="ui center aligned header">Simulador Paginação</h1>
-        <h2 class="ui center aligned header">Tempo: </h2>
-        <div class="ui two column stackable grid">
-            <div class="column">
-                <div class="ui segment" id="processes">
-                    <h2>Fila de Processos</h2>
-                    <p>Processo 1</p>
-                    <p>Processo 1</p>
-                    <p>Processo 1</p>
-                    <p>Processo 1</p>
-                </div>
-            </div>
-            <div class="column">
-                <div class="ui segment">
-                        <h2>Mapa de memória física</h2>
-                </div>
-            </div>
-            <div class="column">
-                <div class="ui segment">
-                        <h2>Log de Saída</h2>
-                        <p>Log 1</p>
-                        <p>Log 1</p>
-                        <p>Log 1</p>
-                        <p>Log 1</p>
-                </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<body style="margin: 30px">
+    <h1 class="ui center aligned header">Simulador Paginação</h1>
+    <h2 class="ui center aligned header">Tempo: </h2>
+    <div class="ui two column stackable grid">
+        <div class="column">
+            <div class="ui segment" id="processes">
+                <h2>Fila de Processos</h2>
+                <p>Processo 1</p>
+                <p>Processo 1</p>
+                <p>Processo 1</p>
+                <p>Processo 1</p>
             </div>
         </div>
-        <hr />
-        <div class="ui input">
-            <input type="file" id="fileInput" />
+        <div class="column">
+            <div class="ui segment">
+                <h2>Mapa de memória física</h2>
+            </div>
         </div>
-        <button class="ui secondary button" onclick="doTick()">
-            Do Tick!
-        </button>
-        <button class="ui secondary button" onclick="console_logger()">
-            Gerar Console Log
-        </button>
-        <script src="process.js"></script>
-    </body>
+        <div class="column">
+            <div class="ui segment">
+                <h2>Log de Saída</h2>
+                <p>Log 1</p>
+                <p>Log 1</p>
+                <p>Log 1</p>
+                <p>Log 1</p>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="ui input">
+        <input type="file" id="fileInput" />
+    </div>
+    <button class="ui secondary button" onclick="doTick()">
+        Do Tick!
+    </button>
+    <button class="ui secondary button" onclick="console_logger()">
+        Gerar Console Log
+    </button>
+    <script src="process.js"></script>
+</body>
+
 </html>

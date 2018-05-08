@@ -5,9 +5,9 @@ var listProcesses = [];
 var listWait = [];
 //Create memory
 var memory;
-memorySize = "1024";
-pageSize = "128";
-time = 1;
+memorySize = "2048";
+pageSize = "64";
+time = 0;
 
 class Process {
   constructor(tBegin, tEnd, pSize, pName) {
@@ -15,7 +15,7 @@ class Process {
     this.pName = pName;
     this.tBegin = tBegin;
     this.tEnd = tEnd;
-    this.tMemory = tBegin - tEnd + 1;
+    this.tMemory = tEnd - tBegin + 1;
   }
 }
 
@@ -34,13 +34,30 @@ function doTick() {
   console.log("Memory", memory);
   console.log("Processes list", listProcesses);
   console.log("Wait list", listWait);
-  if (memory.pageList[i] != null) {
+  console.log("Time", time);
+  if (memory.pageList != null) {
     for (var j = 0; j < memory.pageList.length; j++) {
       if (memory.pageList[j] != null) {
         memory.pageList[j].tMemory--;
         if (memory.pageList[j].tMemory <= 0) {
           memory.pageList[j] = null;
           memory.freePages++;
+        }
+      }
+    }
+  }
+  if (listWait.length >= 1) {
+    var oc = Math.ceil((listWait[0].pSize / memory.pageSize));
+    if(memory.freePages >= oc){
+      for (var j = 0; j < memory.pageList.length; j++) {
+        if (memory.pageList[j] == null) {
+          memory.pageList[j] = listWait[0];
+          oc--;
+          memory.freePages--;
+        }
+        if (oc <= 0) {
+          listWait.splice(0, 1);
+          break;
         }
       }
     }
