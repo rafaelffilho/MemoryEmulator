@@ -70,7 +70,7 @@ function doTick() {
       if (memory.pageList[j] != null) {
         memory.pageList[j].tMemory--;
         if (memory.pageList[j].tMemory <= 0) {
-          outputLog.innerHTML = "<p>Processo: " + memory.pageList[j].pName + "<strong> saiu</strong> da memória.</p>" + outputLog.innerHTML;
+          outputLog.innerHTML = "<p>Tempo: " + time + " - Processo: " + memory.pageList[j].pName + "<strong> saiu</strong> da memória.</p>" + outputLog.innerHTML;
           memory.pageList[j] = null;
           memory.freePages++;
         }
@@ -86,7 +86,7 @@ function doTick() {
           memory.pageList[j] = listWait[0];
           oc--;
           memory.freePages--;
-          outputLog.innerHTML = "<p>Processo: " + memory.pageList[j].pName + "<strong> saiu</strong> da lista de espera e <strong>entrou</strong> na memória.</p>" + outputLog.innerHTML;
+          outputLog.innerHTML = "<p>Tempo: " + time + " - Processo: " + memory.pageList[j].pName + "<strong> saiu</strong> da lista de espera e <strong>entrou</strong> na memória.</p>" + outputLog.innerHTML;
         }
         if (oc <= 0) {
           listWait.splice(0, 1);
@@ -112,7 +112,7 @@ function doTick() {
           memory.pageList[j] = listProcesses[i];
           oc--;
           memory.freePages--;
-          outputLog.innerHTML = "<p>Processo: " + memory.pageList[j].pName + "<strong> entrou</strong> na memória.</p>" + outputLog.innerHTML;
+          outputLog.innerHTML = "<p>Tempo: " + time + " - Processo: " + memory.pageList[j].pName + "<strong> entrou</strong> na memória.</p>" + outputLog.innerHTML;
         }
         if (oc <= 0) {
           listProcesses.splice(i, 1);
@@ -120,7 +120,7 @@ function doTick() {
         }
       }
     } else {
-      outputLog.innerHTML = "<p>Processo: " + listProcesses[i].pName + "<strong> entrou</strong> na lista de espera.</p>" + outputLog.innerHTML;
+      outputLog.innerHTML = "<p>Tempo: " + time + " - Processo: " + listProcesses[i].pName + "<strong> entrou</strong> na lista de espera.</p>" + outputLog.innerHTML;
       listWait.push(listProcesses[i]);
       listProcesses.splice(i, 1);
       break;
@@ -141,7 +141,7 @@ window.onload = function () {
       var reader = new FileReader();
 
       reader.onload = function (e) {
-        //fileDisplayArea.innerText = reader.result;
+        fileDisplayArea.innerText = "";
         processes = reader.result.split("\n");
         for (var i = 0; i < processes.length; i++) {
           var temp = new Array();
@@ -156,7 +156,7 @@ window.onload = function () {
 
       reader.readAsText(file);
     } else {
-      fileDisplayArea.innerText = "File not supported!";
+      fileDisplayArea.innerHTML = "<h1>Arquivo não compatível.</h1>" + "<p>Caso esteja no windows, o problema é as line-endings do arquivos .csv no windows.</p>";
     }
   });
 }
