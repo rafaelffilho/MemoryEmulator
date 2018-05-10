@@ -10,6 +10,13 @@
 <body style="margin: 30px">
     <h1 class="ui center aligned header">Simulador Paginação</h1>
     <br /><br />
+    <div class="ui input">
+        <input type="file" id="fileInput" />
+    </div>
+    <button class="ui secondary button" onclick="doTick()" id="incrementButton">
+        Incrementar tempo em +1
+    </button>
+    <br /><br />
     <div class="ui three column stackable grid">
         <div class="column">
             <h2>Fila de Processos</h2>
@@ -21,7 +28,7 @@
             <div class="ui segment">
                 <!-- The memory info -->
                 <p id="memoryLabel">Tamanho da Memória: (?)</p>
-                <p id="sizeLabel">Tamanho da página: (?)</p>
+                <p id="sizeLabel">Tamanho da Página: (?)</p>
                 <p id="timeLabel" style="font-weight: bold">Tempo: 0</p>
                 <table class="ui celled table" id="memoryTable">
                     <thead>
@@ -51,13 +58,19 @@
             </div>
         </div>
     </div>
+    <br /><br />
     <hr />
-    <div class="ui input">
-        <input type="file" id="fileInput" />
+    <br /><br />
+    <div class="ui one column stackable grid">
+        <div class="column">
+            <h2>Log de Saída</h2>
+            <div style="overflow-y: scroll; max-height: 300px" class="ui segment" id="outputLog">
+                <!-- Output log -->
+            </div>
+        </div>
     </div>
-    <button class="ui secondary button" onclick="doTick()">
-        Incrementar tempo em +1
-    </button>
+    <br /><br />
+    <hr />
     <script src="process.js"></script>
 </body>
 </html>
