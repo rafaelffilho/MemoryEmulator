@@ -109,7 +109,8 @@ function doTick() {
     if (oc <= memory.freePages) {
       for (var j = 0; j < memory.pageList.length; j++) {
         if (memory.pageList[j] == null) {
-          memory.pageList[j] = listProcesses[i];
+          var data = JSON.parse(JSON.stringify(listProcesses[i]));
+          memory.pageList[j] = data;
           oc--;
           memory.freePages--;
           outputLog.innerHTML = "<p>Tempo: " + time + " - Processo: " + memory.pageList[j].pName + "<strong> entrou</strong> na memória.</p>" + outputLog.innerHTML;
