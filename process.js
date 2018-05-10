@@ -71,6 +71,25 @@ function doTick() {
       }
     }
   }
+  //Clear the table
+  $("#memoryTable td").remove();
+  //Update the memory table
+  for (var i = 0; i < memory.pageList.length; i++) {
+    if (memory.pageList[i] != null) {
+      var row = memoryTable.insertRow(1);
+      var processInMemory = row.insertCell(0).innerHTML = "Processo: " + memory.pageList[i].pName + ". Tamanho do Processo: " + memory.pageList[i].pSize + "kb";
+    }
+  }
+
+  //Clear table
+  $("#memoryWaitTable td").remove();
+  //Update the wait process list table
+  for (var i = 0; i < listWait.length; i++) {
+    if (listWait[i] != null) {
+      var row = memoryWaitTable.insertRow(1);
+      var processInList = row.insertCell(0).innerHTML = "Processo: " + listWait[i].pName + ". Tamanho do Processo: " + listWait[i].pSize + "kb";
+    }
+  }
   if (listProcesses.length < 1) return 0;
   while (listProcesses[i].tBegin <= time) {
     var oc = Math.ceil((listProcesses[i].pSize / memory.pageSize));
@@ -90,26 +109,6 @@ function doTick() {
       listWait.push(listProcesses[i]);
       listProcesses.splice(i, 1);
       break;
-    }
-  }
-
-  //Clear the table
-  $("#memoryTable td").remove();
-  //Update the memory table
-  for (var i = 0; i < memory.pageList.length; i++) {
-    if (memory.pageList[i] != null) {
-      var row = memoryTable.insertRow(1);
-      var processInMemory = row.insertCell(0).innerHTML = "Processo: " + memory.pageList[i].pName + ". Tamanho do Processo: " + memory.pageList[i].pSize + "kb";
-    }
-  }
-
-  //Clear table
-  $("#memoryWaitTable td").remove();
-  //Update the wait process list table
-  for (var i = 0; i < listWait.length; i++) {
-    if (listWait[i] != null) {
-      var row = memoryWaitTable.insertRow(1);
-      var processInList = row.insertCell(0).innerHTML = "Processo: " + listWait[i].pName + ". Tamanho do Processo: " + listWait[i].pSize + "kb";
     }
   }
 }
