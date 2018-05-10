@@ -141,15 +141,16 @@ window.onload = function () {
       var reader = new FileReader();
 
       reader.onload = function (e) {
-        fileDisplayArea.innerText = reader.result;
+        //fileDisplayArea.innerText = reader.result;
         processes = reader.result.split("\n");
         for (var i = 0; i < processes.length; i++) {
           var temp = new Array();
           temp = processes[i].split(",");
+          fileDisplayArea.innerHTML = fileDisplayArea.innerHTML + "<p>Processo: " + temp[0] + " - Tempo Inicio: " + temp[1] + " - Tempo Final: " + temp[2] + " - Tamanho: " + temp[3] + "kb";
           var process = new Process(temp[1], temp[2], temp[3], temp[0]);
           listProcesses.push(process);
-          document.getElementById("incrementButton").disabled = false;
         }
+        document.getElementById("incrementButton").disabled = false;
         memory = new Memory(memorySize, pageSize);
       }
 
@@ -158,17 +159,4 @@ window.onload = function () {
       fileDisplayArea.innerText = "File not supported!";
     }
   });
-}
-
-//Print stuff to the console
-function console_logger() {
-
-
-  /*
-  for (var i = 0; i < listProcesses.length; i++) {
-    console.log("Name of the process: " + listProcesses[i].pName);
-    console.log("TimeBegin of the process: " + listProcesses[i].tBegin);
-    console.log("TimeEnd of the process: " + listProcesses[i].tEnd);
-    console.log("Bytes of the process: " + listProcesses[i].pSize);
-  }*/
 }
