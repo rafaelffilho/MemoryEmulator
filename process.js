@@ -148,6 +148,7 @@ window.onload = function () {
           temp = processes[i].split(",");
           var process = new Process(temp[1], temp[2], temp[3], temp[0]);
           listProcesses.push(process);
+          document.getElementById("incrementButton").disabled = false;
         }
         memory = new Memory(memorySize, pageSize);
       }
