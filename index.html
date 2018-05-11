@@ -10,6 +10,29 @@
 <body style="margin: 30px">
     <h1 class="ui center aligned header">Simulador Paginação</h1>
     <br /><br />
+    <div style="text-align: center">
+        <button class="ui button" onclick="setupMemory()">Configurar Memória</button>
+        <br /><br />
+    </div>
+    <div style="text-align: center; display: none" id="memorySetup">
+       <div class="column">
+           <h3>Tamanho da Memória</h3>
+                <select id="memorySizeOptions">
+                    <option value="512">512</option>
+                    <option value="1024">1024</option>
+                    <option value="2048">2048</option>
+                </select>
+       </div>
+            <h3>Tamanho da Página</h3>
+                <select id="pageSizeOptions">
+                    <option value="16">16</option>
+                    <option value="32">32</option>
+                    <option value="64">64</option>
+                    <option value="128">128</option>
+                </select>
+        </div>
+    </div>
+    <br /><br />
     <div class="ui input">
         <input type="file" id="fileInput" />
     </div>

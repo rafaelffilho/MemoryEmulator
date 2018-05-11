@@ -5,12 +5,15 @@ var listProcesses = [];
 var listWait = [];
 //Create memory
 var memory;
-memorySize = "1024";
-pageSize = "128";
+memorySize = "";
+pageSize = "";
 time = 0;
 //Global set variable for output strings
 const setOutputStrings = new Set(["<p>Inicio do Log</p>"]);
 var iterator = setOutputStrings.values();
+//Get selected values
+var memSize = document.getElementById("memorySizeOptions");
+var pagSize = document.getElementById("pageSizeOptions");
 
 class Process {
   constructor(tBegin, tEnd, pSize, pName) {
@@ -156,6 +159,15 @@ function doTick() {
   updateTables();
 }
 
+function setupMemory() {
+  var div = document.getElementById("memorySetup");
+  if (div.style.display === "none") {
+    div.style.display = "block";
+  } else {
+    div.style.display = "none";
+  }
+}
+
 //Load the .csv file into the processes div
 window.onload = function () {
   var fileInput = document.getElementById('fileInput');
@@ -177,6 +189,8 @@ window.onload = function () {
           var process = new Process(temp[1], temp[2], temp[3], temp[0]);
           listProcesses.push(process);
         }
+        memorySize = parseInt(memSize.options[memSize.selectedIndex].value);
+        pageSize = parseInt(pagSize.options[pagSize.selectedIndex].value);
         document.getElementById("incrementButton").disabled = false;
         memory = new Memory(memorySize, pageSize);
       }
