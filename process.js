@@ -84,6 +84,7 @@ function doTick() {
   var timeLabel = document.getElementById("timeLabel").innerHTML = "Tempo: " + time;
   var memoryLabel = document.getElementById("memoryLabel").innerHTML = "Tamanho da Memória: " + memorySize;
   var sizeLabel = document.getElementById("sizeLabel").innerHTML = "Tamanho da Página: " + pageSize;
+  var pageQty = document.getElementById("pageQty").innerHTML = "Quantidade de Páginas: " + (memorySize/pageSize);
   var outputLog = document.getElementById("outputLog");
 
   console.log("Memory", memory);
