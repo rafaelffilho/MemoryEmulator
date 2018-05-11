@@ -21,7 +21,8 @@ class Process {
     this.pName = pName;
     this.tBegin = tBegin;
     this.tEnd = tEnd;
-    this.tMemory = tEnd - tBegin + 1;
+	this.tMemory = tEnd - tBegin + 1;
+	this.pageUsage = 0;
   }
 }
 
@@ -43,13 +44,15 @@ function getLastValue(set){
 function updateTables() {
   var memoryTable = document.getElementById("memoryTable");
   var memoryWaitTable = document.getElementById("memoryWaitTable");
-  
+  var checked = [];
   $("#memoryTable td").remove();
   //Update the memory table
   for (var i = 0; i < memory.pageList.length; i++) {
     if (memory.pageList[i] != null) {
-      var row = memoryTable.insertRow(1);
-      var processInMemory = row.insertCell(0).innerHTML = "Processo: " + memory.pageList[i].pName + ". Tamanho do Processo: " + memory.pageList[i].pSize + "kb";
+	  if (checked.indexOf(memory.pageList[i].pName) != -1) continue;
+    var row = memoryTable.insertRow(1);
+	  var processInMemory = row.insertCell(0).innerHTML = "Processo: " + memory.pageList[i].pName + ". Tamanho do Processo: " + memory.pageList[i].pSize + "kb" + ". Paginas em uso: " + memory.pageList[i].pageUsage;
+	  checked.push(memory.pageList[i].pName);
     }
   }
 
@@ -131,7 +134,8 @@ function doTick() {
 
   if (listProcesses.length < 1) return 0;
   while (listProcesses[i].tBegin <= time) {
-    var oc = Math.ceil((listProcesses[i].pSize / memory.pageSize));
+	var oc = Math.ceil((listProcesses[i].pSize / memory.pageSize));
+	listProcesses[i].pageUsage = oc;
     if (oc <= memory.freePages) {
       for (var j = 0; j < memory.pageList.length; j++) {
         if (memory.pageList[j] == null) {
