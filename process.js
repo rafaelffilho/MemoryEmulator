@@ -8,6 +8,9 @@ var memory;
 memorySize = "1024";
 pageSize = "128";
 time = 0;
+//Global set variable for output strings
+const setOutputStrings = new Set(["<p>Inicio do Log</p>"]);
+var iterator = setOutputStrings.values();
 
 class Process {
   constructor(tBegin, tEnd, pSize, pName) {
@@ -26,6 +29,12 @@ class Memory {
     this.freePages = this.mSize / this.pageSize;
     this.pageList = new Array(this.freePages);
   }
+}
+
+function getLastValue(set){
+  var value;
+  for(value of set);
+  return value;
 }
 
 function updateTables() {
@@ -51,6 +60,17 @@ function updateTables() {
   }
 }
 
+function cloneObject(obj) {
+  var clone = {};
+  for(var i in obj) {
+      if(typeof(obj[i])=="object" && obj[i] != null)
+          clone[i] = cloneObject(obj[i]);
+      else
+          clone[i] = obj[i];
+  }
+  return clone;
+}
+
 function doTick() {
   var i = 0;
   time++;
@@ -70,7 +90,7 @@ function doTick() {
       if (memory.pageList[j] != null) {
         memory.pageList[j].tMemory--;
         if (memory.pageList[j].tMemory <= 0) {
-          outputLog.innerHTML = "<p>Tempo: " + time + " - Processo: " + memory.pageList[j].pName + "<strong> saiu</strong> da memória.</p>" + outputLog.innerHTML;
+          setOutputStrings.add("<p>Tempo: " + time + " - Processo: " + memory.pageList[j].pName + "<strong> saiu</strong> da memória.</p>");
           memory.pageList[j] = null;
           memory.freePages++;
         }
@@ -83,10 +103,10 @@ function doTick() {
     if (memory.freePages >= oc) {
       for (var j = 0; j < memory.pageList.length; j++) {
         if (memory.pageList[j] == null) {
-          memory.pageList[j] = listWait[0];
+          memory.pageList[j] = cloneObject(listWait[0]);
           oc--;
           memory.freePages--;
-          outputLog.innerHTML = "<p>Tempo: " + time + " - Processo: " + memory.pageList[j].pName + "<strong> saiu</strong> da lista de espera e <strong>entrou</strong> na memória.</p>" + outputLog.innerHTML;
+          setOutputStrings.add("<p>Tempo: " + time + " - Processo: " + memory.pageList[j].pName + "<strong> saiu</strong> da lista de espera e <strong>entrou</strong> na memória.</p>");
         }
         if (oc <= 0) {
           listWait.splice(0, 1);
@@ -94,6 +114,9 @@ function doTick() {
         }
       }
     }
+  }
+  if (("<p>" + outputLog.firstChild.innerHTML + "</p>") !== getLastValue(setOutputStrings)) {
+    outputLog.innerHTML = getLastValue(setOutputStrings) + outputLog.innerHTML;
   }
   updateTables();
 
@@ -109,11 +132,10 @@ function doTick() {
     if (oc <= memory.freePages) {
       for (var j = 0; j < memory.pageList.length; j++) {
         if (memory.pageList[j] == null) {
-          var data = JSON.parse(JSON.stringify(listProcesses[i]));
-          memory.pageList[j] = data;
+          memory.pageList[j] = cloneObject(listProcesses[i]);
           oc--;
           memory.freePages--;
-          outputLog.innerHTML = "<p>Tempo: " + time + " - Processo: " + memory.pageList[j].pName + "<strong> entrou</strong> na memória.</p>" + outputLog.innerHTML;
+          setOutputStrings.add("<p>Tempo: " + time + " - Processo: " + memory.pageList[j].pName + "<strong> entrou</strong> na memória.</p>");
         }
         if (oc <= 0) {
           listProcesses.splice(i, 1);
@@ -121,11 +143,15 @@ function doTick() {
         }
       }
     } else {
-      outputLog.innerHTML = "<p>Tempo: " + time + " - Processo: " + listProcesses[i].pName + "<strong> entrou</strong> na lista de espera.</p>" + outputLog.innerHTML;
+      setOutputStrings.add("<p>Tempo: " + time + " - Processo: " + listProcesses[i].pName + "<strong> entrou</strong> na lista de espera.</p>");
       listWait.push(listProcesses[i]);
       listProcesses.splice(i, 1);
       break;
     }
+  }
+
+  if (("<p>" + outputLog.firstChild.innerHTML + "</p>") !== getLastValue(setOutputStrings)) {
+    outputLog.innerHTML = getLastValue(setOutputStrings) + outputLog.innerHTML;
   }
   updateTables();
 }
