@@ -11,6 +11,9 @@ time = 0;
 //Global set variable for output strings
 const setOutputStrings = new Set(["<p>Inicio do Log</p>"]);
 var iterator = setOutputStrings.values();
+//Global set varibles for accounting
+const setDirectMemory = new Set();
+const setListWait = new Set();
 //Get selected values
 var memSize = document.getElementById("memorySizeOptions");
 var pagSize = document.getElementById("pageSizeOptions");
@@ -85,6 +88,7 @@ function doTick() {
   var memoryLabel = document.getElementById("memoryLabel").innerHTML = "Tamanho da Memória: " + memorySize;
   var sizeLabel = document.getElementById("sizeLabel").innerHTML = "Tamanho da Página: " + pageSize;
   var pageQty = document.getElementById("pageQty").innerHTML = "Quantidade de Páginas: " + (memorySize/pageSize);
+  var pageQty = document.getElementById("processesQty").innerHTML = "Processos: " + processes.length;
   var outputLog = document.getElementById("outputLog");
 
   console.log("Memory", memory);
@@ -125,6 +129,8 @@ function doTick() {
   if (("<p>" + outputLog.firstChild.innerHTML + "</p>") !== getLastValue(setOutputStrings)) {
     outputLog.innerHTML = getLastValue(setOutputStrings) + outputLog.innerHTML;
   }
+  var directMemory = document.getElementById("directMemory").innerHTML = "Processos que foram direto para a memória: " + setDirectMemory.size;
+  var listWaitQty = document.getElementById("listWaitQty").innerHTML = "Processos que foram para a lista de espera: " + setListWait.size;
   updateTables();
 
   //Check the end of simulation
@@ -144,6 +150,7 @@ function doTick() {
           oc--;
           memory.freePages--;
           setOutputStrings.add("<p>Tempo: " + time + " - Processo: " + memory.pageList[j].pName + "<strong> entrou</strong> na memória.</p>");
+          setDirectMemory.add(listProcesses[i]);
         }
         if (oc <= 0) {
           listProcesses.splice(i, 1);
@@ -152,6 +159,7 @@ function doTick() {
       }
     } else {
       setOutputStrings.add("<p>Tempo: " + time + " - Processo: " + listProcesses[i].pName + "<strong> entrou</strong> na lista de espera.</p>");
+      setListWait.add(listProcesses[i]);
       listWait.push(listProcesses[i]);
       listProcesses.splice(i, 1);
       break;
@@ -161,6 +169,8 @@ function doTick() {
   if (("<p>" + outputLog.firstChild.innerHTML + "</p>") !== getLastValue(setOutputStrings)) {
     outputLog.innerHTML = getLastValue(setOutputStrings) + outputLog.innerHTML;
   }
+  var directMemory = document.getElementById("directMemory").innerHTML = "Processos que foram direto para a memória: " + setDirectMemory.size;
+  var listWaitQty = document.getElementById("listWaitQty").innerHTML = "Processos que foram para a lista de espera: " + setListWait.size;
   updateTables();
 }
 

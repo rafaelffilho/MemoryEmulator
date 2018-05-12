@@ -52,7 +52,6 @@
                 <!-- The memory info -->
                 <p id="memoryLabel">Tamanho da Memória: (?)</p>
                 <p id="sizeLabel">Tamanho da Página: (?)</p>
-                <p id="pageQty">Quantidade de Páginas: (?)</p>
                 <p id="timeLabel" style="font-weight: bold">Tempo: 0</p>
                 <table class="ui celled table" id="memoryTable">
                     <thead>
@@ -85,11 +84,21 @@
     <br /><br />
     <hr />
     <br /><br />
-    <div class="ui one column stackable grid">
+    <div class="ui two column stackable grid">
         <div class="column">
             <h2>Log de Saída</h2>
             <div style="overflow-y: scroll; max-height: 300px" class="ui segment" id="outputLog">
                 <!-- Output log -->
+            </div>
+        </div>
+        <div class="column">
+            <h2>Contabilidade</h2>
+            <div style="overflow-y: scroll; max-height: 300px" class="ui segment">
+                <p id="pageQty">Quantidade de Páginas: (?)</p>
+                <p id="processesQty">Processos: (?)</p>
+                <p id="directMemory">Processos que foram direto para a memória: (?)</p>
+                <p id="listWaitQty">Processos que foram para a lista de espera: (?)</p>
+                <!-- Accounting log -->
             </div>
         </div>
     </div>
