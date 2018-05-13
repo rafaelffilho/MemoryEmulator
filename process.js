@@ -144,8 +144,7 @@ function doTick() {
     document.getElementById("incrementButton").disabled = true;
   }
 
-  if (listProcesses.length < 1) return 0;
-  while (listProcesses[i].tBegin <= time) {
+  while (listProcesses[i] != null &&  listProcesses[i].tBegin <= time) {
     var oc = Math.ceil((listProcesses[i].pSize / memory.pageSize));
     listProcesses[i].pageUsage = oc;
     if (oc <= memory.freePages) {
