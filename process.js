@@ -26,7 +26,7 @@ class Process {
     this.pName = pName;
     this.tBegin = tBegin;
     this.tEnd = tEnd;
-    this.tMemory = tEnd - tBegin + 1;
+    this.tMemory = tEnd - tBegin;
     this.pageUsage = 0;
   }
 }
