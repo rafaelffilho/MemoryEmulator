@@ -17,6 +17,8 @@ const setListWait = new Set();
 //Get selected values
 var memSize = document.getElementById("memorySizeOptions");
 var pagSize = document.getElementById("pageSizeOptions");
+//Accounting
+var averageWaitListTime = 0;
 
 class Process {
   constructor(tBegin, tEnd, pSize, pName) {
@@ -24,8 +26,8 @@ class Process {
     this.pName = pName;
     this.tBegin = tBegin;
     this.tEnd = tEnd;
-	this.tMemory = tEnd - tBegin + 1;
-	this.pageUsage = 0;
+    this.tMemory = tEnd - tBegin + 1;
+    this.pageUsage = 0;
   }
 }
 
@@ -38,9 +40,9 @@ class Memory {
   }
 }
 
-function getLastValue(set){
+function getLastValue(set) {
   var value;
-  for(value of set);
+  for (value of set);
   return value;
 }
 
@@ -52,10 +54,10 @@ function updateTables() {
   //Update the memory table
   for (var i = 0; i < memory.pageList.length; i++) {
     if (memory.pageList[i] != null) {
-	  if (checked.indexOf(memory.pageList[i].pName) != -1) continue;
-    var row = memoryTable.insertRow(1);
-	  var processInMemory = row.insertCell(0).innerHTML = "Processo: " + memory.pageList[i].pName + ". Tamanho do Processo: " + memory.pageList[i].pSize + "kb" + ". Paginas em uso: " + memory.pageList[i].pageUsage;
-	  checked.push(memory.pageList[i].pName);
+      if (checked.indexOf(memory.pageList[i].pName) != -1) continue;
+      var row = memoryTable.insertRow(1);
+      var processInMemory = row.insertCell(0).innerHTML = "Processo: " + memory.pageList[i].pName + ". Tamanho do Processo: " + memory.pageList[i].pSize + "kb" + ". Paginas em uso: " + memory.pageList[i].pageUsage;
+      checked.push(memory.pageList[i].pName);
     }
   }
 
@@ -71,11 +73,11 @@ function updateTables() {
 
 function cloneObject(obj) {
   var clone = {};
-  for(var i in obj) {
-      if(typeof(obj[i])=="object" && obj[i] != null)
-          clone[i] = cloneObject(obj[i]);
-      else
-          clone[i] = obj[i];
+  for (var i in obj) {
+    if (typeof (obj[i]) == "object" && obj[i] != null)
+      clone[i] = cloneObject(obj[i]);
+    else
+      clone[i] = obj[i];
   }
   return clone;
 }
@@ -87,8 +89,9 @@ function doTick() {
   var timeLabel = document.getElementById("timeLabel").innerHTML = "Tempo: " + time;
   var memoryLabel = document.getElementById("memoryLabel").innerHTML = "Tamanho da Memória: " + memorySize;
   var sizeLabel = document.getElementById("sizeLabel").innerHTML = "Tamanho da Página: " + pageSize;
-  var pageQty = document.getElementById("pageQty").innerHTML = "Quantidade de Páginas: " + (memorySize/pageSize);
+  var pageQty = document.getElementById("pageQty").innerHTML = "Quantidade de Páginas: " + (memorySize / pageSize);
   var pageQty = document.getElementById("processesQty").innerHTML = "Processos: " + processes.length;
+  var averageAllocationTime = document.getElementById("averageAllocationTime").innerHTML = "Tempo médio de alocação: " + time / processes.length;
   var outputLog = document.getElementById("outputLog");
 
   console.log("Memory", memory);
@@ -110,6 +113,7 @@ function doTick() {
   }
 
   if (listWait.length >= 1) {
+    averageWaitListTime++;
     var oc = Math.ceil((listWait[0].pSize / memory.pageSize));
     if (memory.freePages >= oc) {
       for (var j = 0; j < memory.pageList.length; j++) {
@@ -131,6 +135,7 @@ function doTick() {
   }
   var directMemory = document.getElementById("directMemory").innerHTML = "Processos que foram direto para a memória: " + setDirectMemory.size;
   var listWaitQty = document.getElementById("listWaitQty").innerHTML = "Processos que foram para a lista de espera: " + setListWait.size;
+  var averageWaitTime = document.getElementById("averageWaitTime").innerHTML = "Tempo médio na lista de espera: " + (averageWaitListTime / setListWait.size).toFixed(2);
   updateTables();
 
   //Check the end of simulation
@@ -141,8 +146,8 @@ function doTick() {
 
   if (listProcesses.length < 1) return 0;
   while (listProcesses[i].tBegin <= time) {
-	var oc = Math.ceil((listProcesses[i].pSize / memory.pageSize));
-	listProcesses[i].pageUsage = oc;
+    var oc = Math.ceil((listProcesses[i].pSize / memory.pageSize));
+    listProcesses[i].pageUsage = oc;
     if (oc <= memory.freePages) {
       for (var j = 0; j < memory.pageList.length; j++) {
         if (memory.pageList[j] == null) {
@@ -171,7 +176,15 @@ function doTick() {
   }
   var directMemory = document.getElementById("directMemory").innerHTML = "Processos que foram direto para a memória: " + setDirectMemory.size;
   var listWaitQty = document.getElementById("listWaitQty").innerHTML = "Processos que foram para a lista de espera: " + setListWait.size;
+  var averageWaitTime = document.getElementById("averageWaitTime").innerHTML = "Tempo médio na lista de espera: " + (averageWaitListTime / setListWait.size).toFixed(2);
   updateTables();
+}
+
+function doComplete() {
+  while (document.getElementById("incrementButton").disabled == false) {
+    doTick();
+    document.getElementById("autoIncrement").disabled = true;
+  }
 }
 
 function setupMemory() {
@@ -207,6 +220,7 @@ window.onload = function () {
         memorySize = parseInt(memSize.options[memSize.selectedIndex].value);
         pageSize = parseInt(pagSize.options[pagSize.selectedIndex].value);
         document.getElementById("incrementButton").disabled = false;
+        document.getElementById("autoIncrement").disabled = false;
         memory = new Memory(memorySize, pageSize);
       }
 
