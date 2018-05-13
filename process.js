@@ -7,6 +7,8 @@ var listWait = [];
 var memory;
 memorySize = "";
 pageSize = "";
+fExtern = 0;
+fIntern = 0;
 time = 0;
 //Global set variable for output strings
 const setOutputStrings = new Set(["<p>Inicio do Log</p>"]);
@@ -124,6 +126,7 @@ function doTick() {
           setOutputStrings.add("<p>Tempo: " + time + " - Processo: " + memory.pageList[j].pName + "<strong> saiu</strong> da lista de espera e <strong>entrou</strong> na memória.</p>");
         }
         if (oc <= 0) {
+          if((listWait[0].pSize / memory.pageSize) % 1 != 0) fIntern++;
           listWait.splice(0, 1);
           break;
         }
@@ -157,6 +160,7 @@ function doTick() {
           setDirectMemory.add(listProcesses[i]);
         }
         if (oc <= 0) {
+          if((listProcesses[i].pSize / memory.pageSize) % 1 != 0) fIntern++;
           listProcesses.splice(i, 1);
           break;
         }
@@ -166,6 +170,7 @@ function doTick() {
       setListWait.add(listProcesses[i]);
       listWait.push(listProcesses[i]);
       listProcesses.splice(i, 1);
+      fExtern++;
       break;
     }
   }
@@ -173,6 +178,8 @@ function doTick() {
   if (("<p>" + outputLog.firstChild.innerHTML + "</p>") !== getLastValue(setOutputStrings)) {
     outputLog.innerHTML = getLastValue(setOutputStrings) + outputLog.innerHTML;
   }
+  var internLabel = document.getElementById("fIntern").innerHTML = "Fragmentação Interna: " + fIntern;
+  var externLabel = document.getElementById("fExtern").innerHTML = "Fragmentação Externa: " + fExtern;
   var directMemory = document.getElementById("directMemory").innerHTML = "Processos que foram direto para a memória: " + setDirectMemory.size;
   var listWaitQty = document.getElementById("listWaitQty").innerHTML = "Processos que foram para a lista de espera: " + setListWait.size;
   var averageWaitTime = document.getElementById("averageWaitTime").innerHTML = "Tempo médio na lista de espera: " + (averageWaitListTime / setListWait.size).toFixed(2);
