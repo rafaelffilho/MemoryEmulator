@@ -126,7 +126,7 @@ function doTick() {
           setOutputStrings.add("<p>Tempo: " + time + " - Processo: " + memory.pageList[j].pName + "<strong> saiu</strong> da lista de espera e <strong>entrou</strong> na memória.</p>");
         }
         if (oc <= 0) {
-          if((listWait[0].pSize / memory.pageSize) % 1 != 0) fIntern++;
+          if ((listWait[0].pSize / memory.pageSize) % 1 != 0) fIntern++;
           listWait.splice(0, 1);
           break;
         }
@@ -141,13 +141,7 @@ function doTick() {
   var averageWaitTime = document.getElementById("averageWaitTime").innerHTML = "Tempo médio na lista de espera: " + (averageWaitListTime / setListWait.size).toFixed(2);
   updateTables();
 
-  //Check the end of simulation
-  if (memory.pageList.filter(Boolean).length == 0 && time > 1) {
-    outputLog.innerHTML = "<p>Simulação terminada. Tempo total: " + time + "</p>" + outputLog.innerHTML;
-    document.getElementById("incrementButton").disabled = true;
-  }
-
-  while (listProcesses[i] != null &&  listProcesses[i].tBegin <= time) {
+  while (listProcesses[i] != null && listProcesses[i].tBegin <= time) {
     var oc = Math.ceil((listProcesses[i].pSize / memory.pageSize));
     listProcesses[i].pageUsage = oc;
     if (oc <= memory.freePages) {
@@ -160,7 +154,7 @@ function doTick() {
           setDirectMemory.add(listProcesses[i]);
         }
         if (oc <= 0) {
-          if((listProcesses[i].pSize / memory.pageSize) % 1 != 0) fIntern++;
+          if ((listProcesses[i].pSize / memory.pageSize) % 1 != 0) fIntern++;
           listProcesses.splice(i, 1);
           break;
         }
@@ -184,6 +178,13 @@ function doTick() {
   var listWaitQty = document.getElementById("listWaitQty").innerHTML = "Processos que foram para a lista de espera: " + setListWait.size;
   var averageWaitTime = document.getElementById("averageWaitTime").innerHTML = "Tempo médio na lista de espera: " + (averageWaitListTime / setListWait.size).toFixed(2);
   updateTables();
+
+  //Check the end of simulation
+  if (memory.pageList.filter(Boolean).length == 0 && time > 1) {
+    outputLog.innerHTML = "<p>Simulação terminada. Tempo total: " + time + "</p>" + outputLog.innerHTML;
+    document.getElementById("incrementButton").disabled = true;
+    document.getElementById("autoIncrement").disabled = true;
+  }
 }
 
 function doComplete() {
